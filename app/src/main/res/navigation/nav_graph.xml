@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/MainActivity">
+
+    <fragment
+        android:id="@+id/MainActivity"
+        android:name="com.cmmr.rentgo.MainActivity"
+        android:label="MainActivity">
+
+        <action
+            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            app:destination="@id/MenuPrincipal" />
+        <action
+            android:id="@+id/action_MainActivity_to_MenuPrincipal"
+            app:destination="@id/MenuPrincipal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/MenuPrincipal"
+        android:name="com.cmmr.rentgo.MenuPrincipal"
+        android:label="MenuPrincipal"/>
+</navigation>
