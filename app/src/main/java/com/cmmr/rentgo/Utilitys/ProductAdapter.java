@@ -17,12 +17,12 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
     private List<Producto> productoList;
-    private List<Producto> productoListFull; // Lista completa sin filtrar
+    private List<Producto> productoListFull;
     private OnItemClickListener mListener;
 
     public ProductAdapter(List<Producto> productoList) {
         this.productoList = productoList;
-        this.productoListFull = new ArrayList<>(productoList); // Copia de la lista completa
+        this.productoListFull = new ArrayList<>(productoList);
     }
 
     @NonNull
@@ -37,18 +37,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Producto producto = productoList.get(position);
         holder.bind(producto);
 
-        // Agregar OnClickListener a la imagen en cada ViewHolder
+
         holder.imageViewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Obtener el contexto del ImageView
+
                 Intent intent = new Intent(v.getContext(), ProductoActivity.class);
-                // Pasar los datos del producto a la ProductoActivity
                 intent.putExtra("imageResId", producto.getImageResId());
                 intent.putExtra("titulo", producto.getTitle());
                 intent.putExtra("descripcion", producto.getDescripcion());
                 intent.putExtra("precio", producto.getPrecio());
-                // Iniciar la actividad
+
                 v.getContext().startActivity(intent);
             }
         });
@@ -95,19 +94,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
-    // Método para filtrar los elementos en el RecyclerView
+
     public void filter(String text) {
-        productoList.clear(); // Limpiar la lista actual
+        productoList.clear();
         if (text.isEmpty()) {
-            productoList.addAll(productoListFull); // Si el texto de búsqueda está vacío, mostrar la lista completa
+            productoList.addAll(productoListFull);
         } else {
             String filterPattern = text.toLowerCase().trim();
             for (Producto item : productoListFull) {
                 if (item.getTitle().toLowerCase().contains(filterPattern)) {
-                    productoList.add(item); // Agregar elementos que coincidan con el patrón de filtro
+                    productoList.add(item);
                 }
             }
         }
-        notifyDataSetChanged(); // Notificar al RecyclerView que los datos han cambiado
+        notifyDataSetChanged();
     }
 }

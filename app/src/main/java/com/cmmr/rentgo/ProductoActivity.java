@@ -21,20 +21,20 @@ public class ProductoActivity extends AppCompatActivity {
         TextView textViewProductPrice = findViewById(R.id.textViewProductPrice);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // Obtener los datos del intent
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            // Obtener los datos del producto del intent
+
             int imageResId = extras.getInt("imageResId");
             String title = extras.getString("titulo");
             String description = extras.getString("descripcion");
-            double price = extras.getDouble("precio");
+            double precio = extras.getDouble("precio");
 
-            // Mostrar los datos en las vistas
+
             imageViewProduct.setImageResource(imageResId);
             textViewProductTitle.setText(title);
             textViewProductDescription.setText(description);
-            textViewProductPrice.setText("Price: €" + price);
+            textViewProductPrice.setText("Precio: €" + precio);
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
