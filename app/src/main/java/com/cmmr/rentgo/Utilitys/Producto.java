@@ -5,7 +5,7 @@ public class Producto {
     private int imageResId;
     private String descripcion;
     private Double precio;
-    private String[] Caregoria;
+    private String Caregoria;
 
 
     public Producto(String title, int imageResId, String descripcion, Double precio , String Categoria) {
