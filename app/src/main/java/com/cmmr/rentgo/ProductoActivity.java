@@ -34,7 +34,7 @@ public class ProductoActivity extends AppCompatActivity {
             imageViewProduct.setImageResource(imageResId);
             textViewProductTitle.setText(title);
             textViewProductDescription.setText(description);
-            textViewProductPrice.setText("Precio: €" + precio);
+            textViewProductPrice.setText("Precio por dia: €" + precio);
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
