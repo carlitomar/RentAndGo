@@ -1,5 +1,6 @@
 package com.cmmr.rentgo.Utilitys;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,18 +8,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cmmr.rentgo.ProductoActivity;
 import com.cmmr.rentgo.R;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private List<Product> productList;
-    private List<Product> productListFull;
+    private List<Producto> productoList;
+    private List<Producto> productoListFull; // Lista completa sin filtrar
+    private OnItemClickListener mListener;
 
-    public ProductAdapter(List<Product> productList) {
-        this.productList = productList;
-        productListFull = new ArrayList<>(productList);
+    public ProductAdapter(List<Producto> productoList) {
+        this.productoList = productoList;
+        this.productoListFull = new ArrayList<>(productoList); // Copia de la lista completa
     }
 
     @NonNull
@@ -30,33 +34,41 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = productList.get(position);
-        holder.bind(product);
+        Producto producto = productoList.get(position);
+        holder.bind(producto);
+
+        // Agregar OnClickListener a la imagen en cada ViewHolder
+        holder.imageViewProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el contexto del ImageView
+                Intent intent = new Intent(v.getContext(), ProductoActivity.class);
+                // Pasar los datos del producto a la ProductoActivity
+                intent.putExtra("imageResId", producto.getImageResId());
+                intent.putExtra("titulo", producto.getTitle());
+                intent.putExtra("descripcion", producto.getDescripcion());
+                intent.putExtra("precio", producto.getPrecio());
+                // Iniciar la actividad
+                v.getContext().startActivity(intent);
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return productoList.size();
     }
 
-    public void filter(String text) {
-        List<Product> filteredList = new ArrayList<>();
-        if (text.isEmpty()) {
-            filteredList.addAll(productListFull);
-        } else {
-            String filterPattern = text.toLowerCase().trim();
-            for (Product item : productListFull) {
-                if (item.getTitle().toLowerCase().contains(filterPattern)) {
-                    filteredList.add(item);
-                }
-            }
-        }
-        productList.clear();
-        productList.addAll(filteredList);
-        notifyDataSetChanged();
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textViewProduct;
         private ImageView imageViewProduct;
 
@@ -64,11 +76,38 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             super(itemView);
             textViewProduct = itemView.findViewById(R.id.textViewProduct);
             imageViewProduct = itemView.findViewById(R.id.imageViewProduct);
+            itemView.setOnClickListener(this);
         }
 
-        public void bind(Product product) {
-            textViewProduct.setText(product.getTitle());
-            imageViewProduct.setImageResource(product.getImageResId());
+        public void bind(Producto producto) {
+            textViewProduct.setText(producto.getTitle());
+            imageViewProduct.setImageResource(producto.getImageResId());
         }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    mListener.onItemClick(position);
+                }
+            }
+        }
+    }
+
+    // Método para filtrar los elementos en el RecyclerView
+    public void filter(String text) {
+        productoList.clear(); // Limpiar la lista actual
+        if (text.isEmpty()) {
+            productoList.addAll(productoListFull); // Si el texto de búsqueda está vacío, mostrar la lista completa
+        } else {
+            String filterPattern = text.toLowerCase().trim();
+            for (Producto item : productoListFull) {
+                if (item.getTitle().toLowerCase().contains(filterPattern)) {
+                    productoList.add(item); // Agregar elementos que coincidan con el patrón de filtro
+                }
+            }
+        }
+        notifyDataSetChanged(); // Notificar al RecyclerView que los datos han cambiado
     }
 }

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.cmmr.rentgo.Utilitys.Product;
+import com.cmmr.rentgo.Utilitys.Producto;
 import com.cmmr.rentgo.Utilitys.ProductAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,7 @@ public class MenuPrincipal extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerViewProducts;
     private ProductAdapter productAdapter;
+    private List<Producto> productoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,22 @@ public class MenuPrincipal extends AppCompatActivity {
                 }
         );
 
+        productAdapter = new ProductAdapter(new ArrayList<>());
+        productAdapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Producto producto = productoList.get(position);
+                Intent intent = new Intent(MenuPrincipal.this, ProductoActivity.class);
+                intent.putExtra("imageResId", producto.getImageResId());
+                intent.putExtra("title", producto.getTitle());
+                intent.putExtra("description", producto.getDescripcion());
+                intent.putExtra("price", producto.getPrecio());
+                startActivity(intent);
+            }
+        });
+        recyclerViewProducts.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerViewProducts.setAdapter(productAdapter);
+
         fabAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,14 +93,24 @@ public class MenuPrincipal extends AppCompatActivity {
     }
 
     private void loadDummyData() {
-        List<Product> productList = new ArrayList<>();
-        productList.add(new Product("Sudadera 1", R.drawable.sudadera1));
-        productList.add(new Product("Sudadera 2", R.drawable.sudadera2));
-        productList.add(new Product("Zapatillas 1", R.drawable.zaptillas1));
-        productList.add(new Product("Zapatillas 2", R.drawable.zapatillas2));
-        productList.add(new Product("Caña de pescar", R.drawable.pescar1));
+        List<Producto> productoList = new ArrayList<>();
 
-        productAdapter = new ProductAdapter(productList);
+        Producto producto1 = new Producto("Sudadera 1", R.drawable.sudadera1, "Sudadera de color azul", 29.99);
+        productoList.add(producto1);
+
+        Producto producto2 = new Producto("Sudadera 2", R.drawable.sudadera2, "Sudadera de color negro", 34.99);
+        productoList.add(producto2);
+
+        Producto producto3 = new Producto("Zapatillas 1", R.drawable.zaptillas1, "Zapatillas deportivas", 49.99);
+        productoList.add(producto3);
+
+        Producto producto4 = new Producto("Zapatillas 2", R.drawable.zapatillas2, "Zapatillas para correr", 59.99);
+        productoList.add(producto4);
+
+        Producto producto5 = new Producto("Caña de pescar", R.drawable.pescar1, "Caña de pescar de alta calidad", 39.99);
+        productoList.add(producto5);
+
+        productAdapter = new ProductAdapter(productoList);
         recyclerViewProducts.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerViewProducts.setAdapter(productAdapter);
     }

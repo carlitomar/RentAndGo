@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RentGo.NoActionBar">
         <activity
+            android:name=".ProductoActivity"
+            android:exported="false" />
+        <activity
             android:name=".SubirProductoActivity"
             android:exported="false" />
         <activity

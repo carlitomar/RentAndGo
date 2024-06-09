@@ -60,7 +60,7 @@
             android:layout_below="@id/editDescription"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Precio"
+            android:text="Precio por dia"
             android:textSize="18sp" />
 
         <EditText
