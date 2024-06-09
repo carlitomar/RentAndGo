@@ -1,6 +1,9 @@
 package com.cmmr.rentgo;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,45 +16,57 @@ import java.util.List;
 
 public class Perfil extends AppCompatActivity {
 
-    // Views
+
     private TextView textViewName;
     private TextView textViewLastName;
     private TextView textViewAddress;
     private RecyclerView recyclerViewProducts;
+    private ImageButton buttonBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        // Initialize views
+
         textViewName = findViewById(R.id.textViewName);
         textViewLastName = findViewById(R.id.textViewLastName);
         textViewAddress = findViewById(R.id.textViewAddress);
         recyclerViewProducts = findViewById(R.id.recyclerViewProducts);
+        buttonBack = findViewById(R.id.buttonBack);
 
-        // Load dummy data
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Perfil.this, MenuPrincipal.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
         loadDummyData();
     }
 
-    // Method to load dummy data into TextViews and RecyclerView
+
     private void loadDummyData() {
-        // Dummy user data
+
         String name = "Pepe";
         String lastName = "Perez";
-        String address = "Madrid,Villanueva de la cañada";
+        String address = "Madrid, Villanueva de la Cañada";
 
-        // Set data to TextViews
+
         textViewName.setText(name);
         textViewLastName.setText(lastName);
         textViewAddress.setText(address);
 
-        // Dummy product list with Product objects
+
         List<Product> productList = new ArrayList<>();
         productList.add(new Product("Sudadera 1", R.drawable.sudadera1));
         productList.add(new Product("Sudadera 2", R.drawable.sudadera2));
 
-        // Set dummy product list to RecyclerView
+
         ProductAdapter productAdapter = new ProductAdapter(productList);
         recyclerViewProducts.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerViewProducts.setAdapter(productAdapter);

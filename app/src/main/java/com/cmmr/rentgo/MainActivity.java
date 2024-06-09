@@ -38,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 String username = editTextUsername.getText().toString();
                 String password = editTextPassword.getText().toString();
 
-                // Aquí puedes agregar la lógica de autenticación
 
-                // Si la autenticación es exitosa, navega a la pantalla principal
+
                 Intent intent = new Intent(MainActivity.this, MenuPrincipal.class);
                 startActivity(intent);
                 finish();
@@ -59,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         buttonGoogleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Manejar inicio de sesión con Google
             }
         });
     }

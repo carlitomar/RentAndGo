@@ -59,7 +59,7 @@ public class SubirProductoActivity extends AppCompatActivity {
                 if (title.isEmpty() || description.isEmpty() || price.isEmpty() || imageUri == null) {
                     Toast.makeText(SubirProductoActivity.this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Aquí iría la lógica para subir el producto
+
                     Toast.makeText(SubirProductoActivity.this, "Producto subido", Toast.LENGTH_SHORT).show();
                 }
             }
