@@ -3,10 +3,12 @@ package com.cmmr.rentgo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MenuPrincipal extends AppCompatActivity {
 
@@ -18,6 +20,7 @@ public class MenuPrincipal extends AppCompatActivity {
         setContentView(R.layout.activity_menu_principal);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        FloatingActionButton fabAddProduct = findViewById(R.id.fab_add_product);
 
         // Configuración del listener para la navegación del menú
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -38,6 +41,13 @@ public class MenuPrincipal extends AppCompatActivity {
                     }
                 }
         );
+
+        fabAddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuPrincipal.this, SubirProductoActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
-
