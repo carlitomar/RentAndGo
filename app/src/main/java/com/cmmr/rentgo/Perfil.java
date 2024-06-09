@@ -63,13 +63,13 @@ public class Perfil extends AppCompatActivity {
 
 
         List<Producto> productoList = new ArrayList<>();
-        Producto producto1 = new Producto("Sudadera 1", R.drawable.sudadera1, "Sudadera de color azul", 29.99);
+        Producto producto1 = new Producto("Sudadera 1", R.drawable.sudadera1, "Sudadera de color azul", 29.99,"ropa");
         productoList.add(producto1);
 
-        Producto producto2 = new Producto("Sudadera 2", R.drawable.sudadera2, "Sudadera de color negro", 34.99);
+        Producto producto2 = new Producto("Sudadera 2", R.drawable.sudadera2, "Sudadera de color negro", 34.99,"ropa");
         productoList.add(producto2);
 
-        Producto producto3 = new Producto("Zapatillas 1", R.drawable.zaptillas1, "Zapatillas deportivas", 49.99);
+        Producto producto3 = new Producto("Zapatillas 1", R.drawable.zaptillas1, "Zapatillas deportivas", 49.99,"calzado");
         productoList.add(producto3);
 
 

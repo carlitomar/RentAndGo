@@ -5,9 +5,10 @@ public class Producto {
     private int imageResId;
     private String descripcion;
     private Double precio;
+    private String[] Caregoria;
 
 
-    public Producto(String title, int imageResId, String descripcion, Double precio) {
+    public Producto(String title, int imageResId, String descripcion, Double precio , String Categoria) {
         this.title = title;
         this.imageResId = imageResId;
         this.descripcion = descripcion;
@@ -16,6 +17,14 @@ public class Producto {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getCaregoria() {
+        return Caregoria;
+    }
+
+    public void setCaregoria(String caregoria) {
+        Caregoria = caregoria;
     }
 
     public void setTitle(String title) {

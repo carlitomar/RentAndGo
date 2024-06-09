@@ -24,7 +24,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- ScrollView for scrolling content -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -75,19 +74,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewProductTitle" />
 
+            <!-- Start Date Button -->
+            <Button
+                android:id="@+id/buttonStartDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Fecha  inicio"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewProductDescription"
+                app:backgroundTint="#3498DB"/>
+
+            <!-- End Date Button -->
+            <Button
+                android:id="@+id/buttonEndDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Fecha fin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewProductDescription"
+                app:backgroundTint="#3498DB"/>
+
             <!-- Price -->
             <TextView
                 android:id="@+id/textViewProductPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="Precio: $0.00"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewProductDescription" />
+                app:layout_constraintTop_toBottomOf="@id/buttonStartDate" />
 
             <!-- Contact Seller Button -->
             <Button
