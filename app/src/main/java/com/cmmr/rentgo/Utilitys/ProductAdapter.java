@@ -1,6 +1,11 @@
 package com.cmmr.rentgo.Utilitys;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.cmmr.rentgo.ProductoActivity;
 import com.cmmr.rentgo.R;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,22 +43,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Producto producto = productoList.get(position);
         holder.bind(producto);
 
-
         holder.imageViewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(v.getContext(), ProductoActivity.class);
-                intent.putExtra("imageResId", producto.getImageResId());
+                intent.putExtra("imageUri", producto.getImageUri().toString());
                 intent.putExtra("titulo", producto.getTitle());
                 intent.putExtra("descripcion", producto.getDescripcion());
                 intent.putExtra("precio", producto.getPrecio());
-
                 v.getContext().startActivity(intent);
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -80,7 +82,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         public void bind(Producto producto) {
             textViewProduct.setText(producto.getTitle());
-            imageViewProduct.setImageResource(producto.getImageResId());
+            loadImageFromUri(imageViewProduct.getContext(), producto.getImageUri(), imageViewProduct);
         }
 
         @Override
@@ -92,8 +94,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 }
             }
         }
-    }
 
+        private void loadImageFromUri(Context context, Uri uri, ImageView imageView) {
+            ContentResolver contentResolver = context.getContentResolver();
+            try (InputStream inputStream = contentResolver.openInputStream(uri)) {
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                imageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void filter(String text) {
         productoList.clear();

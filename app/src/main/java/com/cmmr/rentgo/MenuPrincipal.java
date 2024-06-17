@@ -1,11 +1,14 @@
 package com.cmmr.rentgo;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuPrincipal extends AppCompatActivity {
+
+    private static final int REQUEST_CODE_ADD_PRODUCT = 1;
 
     private BottomNavigationView bottomNavigationView;
     private RecyclerView recyclerViewProducts;
@@ -43,7 +48,9 @@ public class MenuPrincipal extends AppCompatActivity {
                                 Toast.makeText(MenuPrincipal.this, "Home selected", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.navigation_profile:
-                                startActivity(new Intent(MenuPrincipal.this, Perfil.class));
+                                Intent intent = new Intent(MenuPrincipal.this, Perfil.class);
+                                intent.putParcelableArrayListExtra("productoList", new ArrayList<>(productoList));
+                                startActivity(intent);
                                 return true;
                         }
                         return false;
@@ -51,16 +58,17 @@ public class MenuPrincipal extends AppCompatActivity {
                 }
         );
 
-        productAdapter = new ProductAdapter(new ArrayList<>());
+        productoList = new ArrayList<>();
+        productAdapter = new ProductAdapter(productoList);
         productAdapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Producto producto = productoList.get(position);
                 Intent intent = new Intent(MenuPrincipal.this, ProductoActivity.class);
-                intent.putExtra("imageResId", producto.getImageResId());
-                intent.putExtra("title", producto.getTitle());
-                intent.putExtra("description", producto.getDescripcion());
-                intent.putExtra("price", producto.getPrecio());
+                intent.putExtra("imageUri", producto.getImageUri().toString());
+                intent.putExtra("titulo", producto.getTitle());
+                intent.putExtra("descripcion", producto.getDescripcion());
+                intent.putExtra("precio", producto.getPrecio());
                 startActivity(intent);
             }
         });
@@ -71,7 +79,7 @@ public class MenuPrincipal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuPrincipal.this, SubirProductoActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_ADD_PRODUCT);
             }
         });
 
@@ -92,26 +100,28 @@ public class MenuPrincipal extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_ADD_PRODUCT && resultCode == Activity.RESULT_OK && data != null) {
+            String title = data.getStringExtra("title");
+            String description = data.getStringExtra("description");
+            String price = data.getStringExtra("price");
+            String imageUri = data.getStringExtra("imageUri");
+
+            Producto newProduct = new Producto(title, Uri.parse(imageUri), description, Double.parseDouble(price), "categoria");
+            productoList.add(newProduct);
+            productAdapter.notifyItemInserted(productoList.size() - 1);
+        }
+    }
+
     private void loadDummyData() {
-        List<Producto> productoList = new ArrayList<>();
+        productoList.add(new Producto("Sudadera 1", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.sudadera1), "Sudadera de color azul", 29.99, "ropa"));
+        productoList.add(new Producto("Sudadera 2", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.sudadera2), "Sudadera de color negro", 34.99, "ropa"));
+        productoList.add(new Producto("Zapatillas 1", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.zaptillas1), "Zapatillas deportivas", 49.99, "calzado"));
+        productoList.add(new Producto("Zapatillas 2", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.zapatillas2), "Zapatillas para correr", 59.99, "calzado"));
+        productoList.add(new Producto("Caña de pescar", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.pescar1), "Caña de pescar de alta calidad", 39.99, "pesca"));
 
-        Producto producto1 = new Producto("Sudadera 1", R.drawable.sudadera1, "Sudadera de color azul", 29.99,"ropa");
-        productoList.add(producto1);
-
-        Producto producto2 = new Producto("Sudadera 2", R.drawable.sudadera2, "Sudadera de color negro", 34.99,"ropa");
-        productoList.add(producto2);
-
-        Producto producto3 = new Producto("Zapatillas 1", R.drawable.zaptillas1, "Zapatillas deportivas", 49.99,"calzado");
-        productoList.add(producto3);
-
-        Producto producto4 = new Producto("Zapatillas 2", R.drawable.zapatillas2, "Zapatillas para correr", 59.99,"calzado");
-        productoList.add(producto4);
-
-        Producto producto5 = new Producto("Caña de pescar", R.drawable.pescar1, "Caña de pescar de alta calidad", 39.99,"pesca");
-        productoList.add(producto5);
-
-        productAdapter = new ProductAdapter(productoList);
-        recyclerViewProducts.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerViewProducts.setAdapter(productAdapter);
+        productAdapter.notifyDataSetChanged();
     }
 }

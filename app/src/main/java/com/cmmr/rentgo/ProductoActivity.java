@@ -2,8 +2,10 @@ package com.cmmr.rentgo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,10 +13,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.cmmr.rentgo.MenuPrincipal;
-import com.cmmr.rentgo.Perfil;
-import com.cmmr.rentgo.R;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,6 +34,7 @@ public class ProductoActivity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat sdf;
     private double precioPorDia;
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,13 @@ public class ProductoActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            int imageResId = extras.getInt("imageResId");
-            String title = extras.getString("titulo");
-            String description = extras.getString("descripcion");
-            double precio = extras.getDouble("precio");
+            String imageUriString = extras.getString("imageUri");
+            selectedImageUri = Uri.parse(imageUriString);
+            String title = extras.getString("title");
+            String description = extras.getString("description");
+            double precio = extras.getDouble("price");
 
-            imageViewProduct.setImageResource(imageResId);
+            imageViewProduct.setImageURI(selectedImageUri);
             textViewProductTitle.setText(title);
             textViewProductDescription.setText(description);
             textViewProductPrice.setText("Precio por día: €" + precio);
@@ -108,8 +112,7 @@ public class ProductoActivity extends AppCompatActivity {
                         String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
                         button.setText(selectedDate);
 
-                        // Calcular precio basado en la diferencia de días
-                        double precioTotal = calcularPrecioTotal(); // Función para calcular el precio total
+                        double precioTotal = calcularPrecioTotal();
                         textViewProductPrice.setText("Precio total: €" + precioTotal);
                     }
                 },

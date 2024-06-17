@@ -1,6 +1,7 @@
 package com.cmmr.rentgo;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -63,14 +64,9 @@ public class Perfil extends AppCompatActivity {
 
 
         List<Producto> productoList = new ArrayList<>();
-        Producto producto1 = new Producto("Sudadera 1", R.drawable.sudadera1, "Sudadera de color azul", 29.99,"ropa");
-        productoList.add(producto1);
-
-        Producto producto2 = new Producto("Sudadera 2", R.drawable.sudadera2, "Sudadera de color negro", 34.99,"ropa");
-        productoList.add(producto2);
-
-        Producto producto3 = new Producto("Zapatillas 1", R.drawable.zaptillas1, "Zapatillas deportivas", 49.99,"calzado");
-        productoList.add(producto3);
+        productoList.add(new Producto("Sudadera 1", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.sudadera1), "Sudadera de color azul", 29.99, "ropa"));
+        productoList.add(new Producto("Sudadera 2", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.sudadera2), "Sudadera de color negro", 34.99, "ropa"));
+        productoList.add(new Producto("Zapatillas 1", Uri.parse("android.resource://com.cmmr.rentgo/" + R.drawable.zaptillas1), "Zapatillas deportivas", 49.99, "calzado"));
 
 
         ProductAdapter productAdapter = new ProductAdapter(productoList);

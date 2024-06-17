@@ -59,6 +59,14 @@ public class SubirProductoActivity extends AppCompatActivity {
                 if (title.isEmpty() || description.isEmpty() || price.isEmpty() || imageUri == null) {
                     Toast.makeText(SubirProductoActivity.this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
+                    // Enviar los datos del producto de vuelta a MenuPrincipal
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("title", title);
+                    resultIntent.putExtra("description", description);
+                    resultIntent.putExtra("price", price);
+                    resultIntent.putExtra("imageUri", imageUri.toString());
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
 
                     Toast.makeText(SubirProductoActivity.this, "Producto subido", Toast.LENGTH_SHORT).show();
                 }
